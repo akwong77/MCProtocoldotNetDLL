@@ -1,0 +1,55 @@
+Imports QEther.QEther
+Public Class QEtherDLLSample
+Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+   
+Dim ins As New QEther.QEther
+'####### Ether設定  #####################
+ins.ActHostAddress = 192.168.1.10
+ins.ActPortNumber = 2000
+ins.BinaryASCII = EnumBinaryASCII.Binary 'PLCに設定したもの
+'#######  RS232設定  #####################
+ins.ActBaudRate = 19200
+ins.ActDtrEnable = True
+ins.ActParity = EnumParity.Even偶数
+ins.ActCOMPort = COM5
+ins.ActStopbits = EnumStopbits.One
+'ins.SumCheckRS232C = False
+'ins.ActSourceUnitNumber = H10  'RS232C局番
+'ins.ActDatabits = 7  '形式2-4は7bit, 形式5は8bit固定なので設定しないでください
+'ins.ActHandShake = False '必要があれば設定
+'ins.ActRtsEnable= False '必要があれば設定
+'############################
+   
+        '##　まずはRS232Cで通信（形式4)
+ins.TIMEOUT = 100
+ins.MCProtocol = EnumMCProtocol.形式4
+' ins.CFrame = EnumCFrame.フレーム4C '通常は設定不要. なお形式5では4C固定なので設定しないでください
+   
+MsgBox(ワード単位ブロック書込み)
+ins.WriteRandomBlock2(2, "D0", 2, 123, 234, "M0", 3, "HAAAA", "HBBBB", "HFFFF")
+   
+Dim s As String
+Dim randomread As New RetrunRandomWORD
+MsgBox(ランダムワード読込)
+randomread = ins.ReadDeviceRandom2("D0", D1", "D2")
+For i = 0 To randomread.UShortArray.Length - 1
+s = s & randomread.UShortArray(i).ToString("D5")
+Next
+MsgBox(s)
+ 
+s=""
+   
+'##　次はEthernetで通信
+ins.TIMEOUT = 100
+ins.MCProtocol = EnumMCProtocol.フレーム3E
+MsgBox(ワード単位ブロック書込み)
+ins.WriteRandomBlock2(2, "D0", 2, 123, 234, "M0", 3, "HAAAA", "HBBBB", "HFFFF")
+MsgBox(ランダムワード読込)
+randomread = ins.ReadDeviceRandom2("D0", "D1", "D2")
+ 
+For i = 0 To randomread.UShortArray.Length - 1
+s = s & randomread.UShortArray(i).ToString(D5)
+Next
+MsgBox(s)
+    End Sub
+End Class

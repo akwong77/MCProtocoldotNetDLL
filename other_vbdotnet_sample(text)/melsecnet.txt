@@ -1,0 +1,18 @@
+
+        Dim ins As New QEther.QEther 'インスタンスの生成
+       ' ins.TimeOutMessage = "タイムアウトしました"
+       ' ins.TimeOutMessageDisplay = True
+        ins.TIMEOUT = 10000                   '通信の最大待ち時間
+        ins.MCProtocol = EnumMCProtocol.フレーム3E  'Ethernet(3E,4E)のﾊﾞｲﾅﾘ, 形式5(4Cﾌﾚｰﾑﾊﾞｲﾅﾘ)に対応しています。
+        ins.BinaryASCII = EnumBinaryASCII.Binary 'GX-Works2で設定したMCプロトコルの交信データコード
+        ins.ActHostAddress = "192.168.1.10"  'EthernetユニットのIPアドレス
+        ins.ActPortNumber = 2000 'Ethernetユニットのポート番号
+        ins.ActNetworkNumber = 2  'MELSECNET管理局、子局のネットワークの番号を2と設定した。
+ 
+'初期設定を終えたら、以下で管理局、子局それぞれにアクセスする
+ 
+        ins.ActUnitNumber = 1  'ロータリスイッチで設定した管理局の局番
+        MsgBox(ins.ReadDeviceBlock2("D4", 1).UShortArray(0))           '局番1のCPUのレジスタD4の値を読みだして表示
+ 
+        ins.ActUnitNumber = 2 'ロータリスイッチで設定した子局の局番
+        MsgBox(ins.ReadDeviceBlock2("D4", 1).UShortArray(0))           '局番2のCPUのレジスタD4の値を読みだして表示

@@ -1,0 +1,48 @@
+Imports QEther.QEther
+ 
+ 
+Public Class QEtherDLLSample
+ 
+ 
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+ 
+        Dim ins As New QEther.QEther
+ 
+        ins.ActHostAddress = "192.168.1.10"
+        ins.ActPortNumber = 2000
+        ins.BinaryASCII = EnumBinaryASCII.Binary
+        ins.MCProtocol = EnumMCProtocol.フレーム4E  'Ethernet(3E,4E)のﾊﾞｲﾅﾘ, 形式5(4Cﾌﾚｰﾑﾊﾞｲﾅﾘ)に対応しています。
+ 
+        'PLCへ書き込むテストデータの準備
+        Dim word(960) As UShort : Dim i As Integer : Dim j As Integer : Dim k As Integer
+        For i = 0 To 959 : word(i) = 0 : Next
+ 
+        '今回はPLCとの通信時間を測定してみました
+        Dim sw As New System.Diagnostics.Stopwatch()
+        sw.Start()
+ 
+        ' D0, D3, D6, ... D297  の飛び飛びの100点に書き込むテストデータ(オブジェクト変数)の準備
+ 
+        Dim obj(99, 1) As Object
+        For i = 0 To 99
+ 
+            ' 書き込むレジスタと対応するデータ
+            obj(i, 0) = "D" + (i * 3).ToString : obj(i, 1) = i
+        Next
+ 
+        'ランダム(非連続デバイスへ)書込み。点数は100点(100ワード)
+        ins.WriteDeviceRandom2(100, obj)
+ 
+ 
+        'なお、ins.WriteDeviceRandom2(3, “D0”, 0, “D3”, 3, “D6”, 6 ....) というような
+        '「可変引数」インタフェースでも同じように書き込めますが点数が多い場合は不便でしょう。
+        'なのでオブジェクト変数で書き込めるインタフェースを御用意したわけです。
+ 
+        sw.Stop()
+        '経過時間を出力する
+        MsgBox(sw.ElapsedMilliseconds) ' Long 型で取得・出力
+ 
+    End Sub
+ 
+  
+End Class
