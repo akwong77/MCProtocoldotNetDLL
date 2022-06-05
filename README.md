@@ -3,10 +3,10 @@
 This is a .NET DLL.  You can communicate to 三菱Q系列PLC to use the DLL.
 Refer this DLL in Visual Studio.
 
-Function example,
+Function example(Like MX Component)
 WriteDeviceBlock2, ReadDeviceBlock2, WriteDeviceRandom2,ReadDeviceRandom2
 
-Property example,
+Property example(Like MX Component),
 ActSourceStation, ActSourceUnitNumber,ActNetworkNumber,ActUnitNumber,ActConnectUnitNumber, ActHostAddress
 
 Support Protocol example
