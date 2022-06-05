@@ -5,5 +5,5 @@ Refer this DLL in Visual Studio.
 
 This DLL provide functions as "WriteDeviceBlock2" ..etc,  Like MX Component
 
-Refer sample code.
+Refer sample code ( C#, Visual Basic .NET)
 
